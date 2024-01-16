@@ -1,21 +1,11 @@
 import GameController
 
-struct Point {
-    var x: Float
-
-    var y: Float
-
-    static var zero = Point(x: 0, y: 0)
-}
-
 class MouseInputController {
-    static var shared = MouseInputController()
+    static let shared = MouseInputController()
 
-    var scroll: Point
+    var scroll: Point = .zero
 
     init() {
-        scroll = .zero
-
         NotificationCenter.default.addObserver(forName: .GCMouseDidConnect, object: nil, queue: .main) { notification in
             guard let mouse = notification.object as? GCMouse else { return }
 

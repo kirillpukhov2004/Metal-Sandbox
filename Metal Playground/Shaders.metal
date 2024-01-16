@@ -49,4 +49,6 @@ fragment float4 fragment_main(VertexOut vertex_out [[stage_in]])
     float light = saturate(dot(N, L));
 
     return base_color * float4(f_unlit + light, 1);
+
+    return base_color;
 }

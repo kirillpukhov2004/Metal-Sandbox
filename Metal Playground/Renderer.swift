@@ -92,7 +92,7 @@ extension Renderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         viewportController.viewportCamera.update(size: Size(size))
     }
-
+    // TODO: Add viewport shading
     func draw(in view: MTKView) {
         viewportController.viewportCamera.update(deltaTime: 0)
 
@@ -110,8 +110,8 @@ extension Renderer: MTKViewDelegate {
 
         scene.meshes.forEach { mesh in
             var uniforms = Uniforms(
-                modelMatrix: mesh.transformation.matrix,
-                viewMatrix: viewportController.viewportCamera.transformation.matrix,
+                modelMatrix: mesh.transformationMatrix,
+                viewMatrix: viewportController.viewportCamera.transformationMatrix,
                 projectionMatrix: viewportController.viewportCamera.projectionMatrix
             )
 

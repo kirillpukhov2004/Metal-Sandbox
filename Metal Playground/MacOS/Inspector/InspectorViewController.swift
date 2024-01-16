@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import simd
 
 enum TransformableProperty: CaseIterable {
     case translation
@@ -77,7 +78,9 @@ extension InspectorViewController: NSTableViewDataSource {
         }
 
         switch sceneObject {
-        case is any Camera:
+        case is AnyCamera:
+            return TransformableProperty.allCases.count
+        case is AnyMesh:
             return TransformableProperty.allCases.count
         default:
             return 0
@@ -97,41 +100,54 @@ extension InspectorViewController: NSTableViewDelegate {
         case .translation:
             item.label = "Translation"
 
-            sceneObject.transformationPublisher
-                .map(\.translation)
-                .sink{ item.updateVector(vector: $0) }
+            sceneObject.translationPublisher
+                .removeDuplicates()
+                .assign(to: &item.$vector)
+
+            item.$vector
+                .removeDuplicates()
+                .assign(to: \.translation, on: sceneObject)
                 .store(in: &subscriptions)
 
-            item.vectorDidChangedPublisher
-                .sink {
-                    sceneObject.transformation.translation = item.vector
-                }
-                .store(in: &subscriptions)
         case .rotation:
             item.label = "Rotation"
 
-            sceneObject.transformationPublisher
-                .map(\.rotation)
-                .sink{ item.updateVector(vector: $0) }
-                .store(in: &subscriptions)
+            sceneObject.rotationPublisher
+                .removeDuplicates()
+                .map { radVector in
+                    var gradVector = SIMD3<Float>()
 
-            item.vectorDidChangedPublisher
-                .sink {
-                    sceneObject.transformation.rotation = item.vector
+                    gradVector.x = radVector.x * 180 / .pi
+                    gradVector.y = radVector.y * 180 / .pi
+                    gradVector.z = radVector.z * 180 / .pi
+
+                    return gradVector
                 }
+                .assign(to: &item.$vector)
+
+            item.$vector
+                .removeDuplicates()
+                .map { gradVector in
+                    var radVector = SIMD3<Float>()
+
+                    radVector.x = gradVector.x * .pi / 180
+                    radVector.y = gradVector.y * .pi / 180
+                    radVector.z = gradVector.z * .pi / 180
+
+                    return radVector
+                }
+                .assign(to: \.rotation, on: sceneObject)
                 .store(in: &subscriptions)
         case .scale:
             item.label = "Scale"
 
-            sceneObject.transformationPublisher
-                .map(\.scale)
-                .sink{ item.updateVector(vector: $0) }
-                .store(in: &subscriptions)
+            sceneObject.scalePublisher
+                .removeDuplicates()
+                .assign(to: &item.$vector)
 
-            item.vectorDidChangedPublisher
-                .sink {
-                    sceneObject.transformation.scale = item.vector
-                }
+            item.$vector
+                .removeDuplicates()
+                .assign(to: \.scale, on: sceneObject)
                 .store(in: &subscriptions)
         }
 

@@ -18,17 +18,15 @@ class TextField: NSView {
         }
     }
 
-    var textDidEndEditingPublisher: AnyPublisher<Void, Never> {
+    var textDidEndEditingPublisher: AnyPublisher<TextField, Never> {
         return NotificationCenter.default.publisher(for: NSTextField.textDidEndEditingNotification, object: textField)
-            .compactMap { $0.object as? NSTextField }
-            .map { _ in }
+            .map { _ in self }
             .eraseToAnyPublisher()
     }
 
-    var textDidChangedPublisher: AnyPublisher<String, Never> {
+    var textDidChangedPublisher: AnyPublisher<TextField, Never> {
         return NotificationCenter.default.publisher(for: NSTextField.textDidChangeNotification, object: textField)
-            .compactMap { $0.object as? NSTextField }
-            .map { $0.stringValue }
+            .map { _ in self }
             .eraseToAnyPublisher()
     }
 

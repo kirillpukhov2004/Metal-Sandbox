@@ -13,13 +13,7 @@ class XYZPropertiesTableViewItem: NSView {
         }
     }
 
-    private(set) var vector: SIMD3<Float> = .zero
-
-    private var vectorDidChangedSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-
-    var vectorDidChangedPublisher: AnyPublisher<Void, Never> {
-        return vectorDidChangedSubject.eraseToAnyPublisher()
-    }
+    @Published var vector: SIMD3<Float> = .zero
 
     private var subscriptions: Set<AnyCancellable> = Set<AnyCancellable>()
 
@@ -28,6 +22,7 @@ class XYZPropertiesTableViewItem: NSView {
 
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
 
         return numberFormatter
     }()
@@ -109,56 +104,40 @@ class XYZPropertiesTableViewItem: NSView {
 
     private func setupSubscriptions() {
         xTextField.textDidEndEditingPublisher
-            .compactMap { [weak self] () -> Float? in
-                guard let self = self else { return nil }
-
-                return numberFormatter.number(from: xTextField.string)?.floatValue
+            .compactMap { [weak self] in
+                return self?.numberFormatter.number(from: $0.string)?.floatValue
             }
             .sink { [weak self] in
-                guard let self = self else { return }
-
-                xTextField.string = numberFormatter.string(from: NSNumber(value: $0))!
-                vector.x = $0
-                vectorDidChangedSubject.send()
+                self?.vector.x = $0
             }
             .store(in: &subscriptions)
 
         yTextField.textDidEndEditingPublisher
-            .compactMap { [weak self] () -> Float? in
-                guard let self = self else { return nil }
-
-                return numberFormatter.number(from: yTextField.string)?.floatValue
+            .compactMap { [weak self] in
+                return self?.numberFormatter.number(from: $0.string)?.floatValue
             }
             .sink { [weak self] in
-                guard let self = self else { return }
-
-                yTextField.string = numberFormatter.string(from: NSNumber(value: $0))!
-                vector.y = $0
-                vectorDidChangedSubject.send()
+                self?.vector.y = $0
             }
             .store(in: &subscriptions)
 
         zTextField.textDidEndEditingPublisher
-            .compactMap { [weak self] () -> Float? in
-                guard let self = self else { return nil }
-
-                return numberFormatter.number(from: zTextField.string)?.floatValue
+            .compactMap { [weak self] in
+                return self?.numberFormatter.number(from: $0.string)?.floatValue
             }
             .sink { [weak self] in
-                guard let self = self else { return }
-
-                zTextField.string = numberFormatter.string(from: NSNumber(value: $0))!
-                vector.z = $0
-                vectorDidChangedSubject.send()
+                self?.vector.z = $0
             }
             .store(in: &subscriptions)
-    }
 
-    func updateVector(vector: SIMD3<Float>) {
-        self.vector = vector
+        $vector
+            .sink { [weak self] vector in
+                guard let self = self else { return }
 
-        xTextField.string = numberFormatter.string(from: NSNumber(value: vector.x))!
-        yTextField.string = numberFormatter.string(from: NSNumber(value: vector.y))!
-        zTextField.string = numberFormatter.string(from: NSNumber(value: vector.z))!
+                xTextField.string = numberFormatter.string(from: NSNumber(value: vector.x))!
+                yTextField.string = numberFormatter.string(from: NSNumber(value: vector.y))!
+                zTextField.string = numberFormatter.string(from: NSNumber(value: vector.z))!
+            }
+            .store(in: &subscriptions)
     }
 }

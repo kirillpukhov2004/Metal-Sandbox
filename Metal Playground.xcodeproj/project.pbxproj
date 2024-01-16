@@ -70,6 +70,8 @@
 		D6F9EFEE2B496F1E00ADA18E /* ViewportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9EFED2B496F1E00ADA18E /* ViewportController.swift */; };
 		D6F9EFF02B496F2E00ADA18E /* InspectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9EFEF2B496F2E00ADA18E /* InspectorController.swift */; };
 		D6F9EFF22B496F6F00ADA18E /* ProjectOutlineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9EFF12B496F6F00ADA18E /* ProjectOutlineController.swift */; };
+		D6FBF2EC2B4D577200CF24B3 /* KeyboardInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBF2EB2B4D577200CF24B3 /* KeyboardInputController.swift */; };
+		D6FBF2EE2B4D579900CF24B3 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FBF2ED2B4D579900CF24B3 /* Point.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +124,8 @@
 		D6F9EFED2B496F1E00ADA18E /* ViewportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewportController.swift; sourceTree = "<group>"; };
 		D6F9EFEF2B496F2E00ADA18E /* InspectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorController.swift; sourceTree = "<group>"; };
 		D6F9EFF12B496F6F00ADA18E /* ProjectOutlineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOutlineController.swift; sourceTree = "<group>"; };
+		D6FBF2EB2B4D577200CF24B3 /* KeyboardInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputController.swift; sourceTree = "<group>"; };
+		D6FBF2ED2B4D579900CF24B3 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +259,7 @@
 			children = (
 				D6803B512ADFF52C00E0A762 /* Shaders.metal */,
 				D672372D2B42EBAB0043B894 /* Size.swift */,
+				D6FBF2ED2B4D579900CF24B3 /* Point.swift */,
 				D60A4D4A2B3DEEA300F9906D /* Transformable.swift */,
 				D633E8152B39E14F0061B1A7 /* Renderer.swift */,
 				D67237422B4721A70043B894 /* Extensions */,
@@ -316,6 +321,7 @@
 				D6F9EFED2B496F1E00ADA18E /* ViewportController.swift */,
 				D6F9EFEF2B496F2E00ADA18E /* InspectorController.swift */,
 				D67237242B428DA40043B894 /* MouseInputController.swift */,
+				D6FBF2EB2B4D577200CF24B3 /* KeyboardInputController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -463,11 +469,13 @@
 				D67237302B434A140043B894 /* ProjectOutlineViewModel.swift in Sources */,
 				D633E8172B39E14F0061B1A7 /* Renderer.swift in Sources */,
 				D672372C2B42E5BD0043B894 /* ViewPortViewModel.swift in Sources */,
+				D6FBF2EE2B4D579900CF24B3 /* Point.swift in Sources */,
 				D60A4D512B3F649400F9906D /* SidebarSplitViewController.swift in Sources */,
 				D60A4D4F2B3F536800F9906D /* SceneOutlineViewItem.swift in Sources */,
 				D60A4D4B2B3DEEA300F9906D /* Transformable.swift in Sources */,
 				D67237222B4221AD0043B894 /* NSMenuItem+Extensions.swift in Sources */,
 				D6F9EFF02B496F2E00ADA18E /* InspectorController.swift in Sources */,
+				D6FBF2EC2B4D577200CF24B3 /* KeyboardInputController.swift in Sources */,
 				D633E8182B39E4000061B1A7 /* Camera.swift in Sources */,
 				D6803B4E2ADFEFE700E0A762 /* main.swift in Sources */,
 				D601825B2B40830E00034799 /* SceneOutlineViewCell.swift in Sources */,

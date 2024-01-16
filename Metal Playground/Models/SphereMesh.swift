@@ -1,11 +1,27 @@
+import Foundation
 import MetalKit
 
 class SphereMesh: Mesh {
     var id: UUID = UUID()
 
-    @Published var transformation: Transformation = Transformation()
+    @Published var translation: SIMD3<Float> = .zero
+    var translationPublisher: Published<SIMD3<Float>>.Publisher { $translation }
 
-    var transformationPublisher: Published<Transformation>.Publisher { $transformation }
+    @Published var rotation: SIMD3<Float> = .zero
+    var rotationPublisher: Published<SIMD3<Float>>.Publisher { $rotation }
+
+    @Published var scale: SIMD3<Float> = .one
+    var scalePublisher: Published<SIMD3<Float>>.Publisher { $scale }
+
+    var transformationMatrix: float4x4 {
+        let translationMatrix = float4x4.translationMatrix(tx: translation.x, ty: translation.y, tz: translation.z)
+
+        let rotationMatrix = float4x4.rotationMatrix(rx: rotation.x, ry: rotation.y, rz: rotation.z)
+
+        let scaleMatrix = float4x4.scaleMatrix(sx: scale.x, sy: scale.y, sz: scale.z)
+
+        return translationMatrix * rotationMatrix * scaleMatrix
+    }
 
     var mdlMesh: MDLMesh
 
